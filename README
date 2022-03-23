@@ -1,0 +1,76 @@
+324CB - Dragomir Constantin-Cristian
+
+Explicarea implementarii temei 3 - IOCLA
+
+Functia iocla_atoi:
+	Se retine configuratia stivei. Se calculeaza 
+	lungimea sirului dat ca parametru. Ne folosim de 
+	stiva pentru a retine fiecare caracter din sir.
+	De retinut este ca acestea se introduc in stiva 
+	incepand cu ultimul caracter pentru ca atunci cand 
+	se realizeaza extragerea ordinea sa fie cea din sir.
+	Mai mult, se neglijeaza, in prima parte, faptul ca 
+	numarul poate fi negativ. Ulterior, se construieste 
+	in registrul eax numarul prin inmultiri repetate cu 
+	10 si adaugarea unui caracter transformat in cifra. 
+	La sfarsit, se verifica, totusi, daca numarul este 
+	negativ pentru a se realiza o inmultire cu -1.
+
+Functia create_tree:
+	Se retine configuratia stivei si a registrilor, 
+	pentru a nu strica cumva executia programului. Se 
+	initializeaza registri cu valori specifice. Pasul 
+	urmator este de a gasi anumite aspecte specifice 
+	sirului dat ca input, anume: numarul de caractere, 
+	numarul de cuvinte. Pentru a gasi numarul ce 
+	litere, se incrementeaza un contor; pentru a retine
+	numarul de cuvinte, se tine cont de numarul de 
+	spatii, la care se adauga 1.
+
+	Odata cunoscut numarul de cuvinte, acesta se va 
+	inmulti cu 4, ceea ce anticipeaza crearea unui 
+	vector de adrese, adrese ce puncteaza catre 
+	inceputul unor siruri de caractere. Interesul este 
+	orientat catre spargerea sirului de caractere in 
+	subsiruri ale caror adrese vor fi folosite la 
+	constructia arborelui. Cu ajutorul unui iterator, 
+	se porneste de la sfarsitul sirului catre inceput, 
+	si se memoreaza stringul cuprins intre spatii (sau 
+	spatiu si caracterul NULL). Dupa ce se genereaza 
+	subsirul, adresa sa este trecuta in vectorul de 
+	cuvinte [words_array]. (Initial, ideea era sa fie 
+	folosita stiva pentru a retine cuvintele din sirul 
+	de caractere. Acesta este motivul pentru 
+	parcurgerea inversa a sirului dat ca input). 
+
+	Dupa aceasta etapa, se introduce in stiva valoarea 0, se 
+	parcurge vectorul de adrese si se realizeaza 
+	constructia arborelui. Se trateaza separat cazul in 
+	care trebuie introdus un semn sau un numar. Atunci 
+	cand trebuie introdus un semn, se verifica daca 
+	radacina exista (informatia nodului radacina se 
+	considera ca este semn). Daca nu exista, aceasta 
+	este creata. Daca radacina exista, atunci se 
+	incearca introducerea in stanga sau in dreapta a 
+	nodului un nou nod. Daca cele 2 pozitii sunt 
+	ocupate, atunci se revine, prin extrageri din 
+	stiva, pe ramura generata, la un nod a carui parte 
+	dreapta este libera. De aici, necesitatea 
+	push-urilor pe stiva. Fiecare nod este considerat 
+	un intermediar intre radacina si o anumita frunza(
+	formeaza o cale). In cazul introducerii unui numar 
+	se procedeaza similar, cu mentiunea ca la un astfel 
+	de nod nu este nevoie ca adresa sa sa fie stocata 
+	pe stiva, fiind un nod terminal. Vrem sa ramanem la 
+	aceeasi adancime (ceea ce explica instructiunea mov 
+	eax, ecx).
+
+	La final, exista posibilitatea ca in stiva sa 
+	ramana adrese de noduri, le extragem pana ajungem 
+	la valoarea 0 stocata initial (si valoarea 0 este 
+	extrasa). De asemenea, se elibereaza memoria 
+	folosita de vectorul de adrese catre subsirurile de 
+	caractere, se restureaza registrii si se plaseaza 
+	in registrul eax, adresa radacinii arborelui 
+	construit. Valoarea din eax va fi cea returnata de 
+	functie (conform cdecl).
